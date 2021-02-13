@@ -26,8 +26,8 @@ export const deleteUser = async (_id: string) => {
   await (await database()).collection("user").findOneAndDelete({ _id: _id });
 };
 
-export const updateUserAge = async (_id: string) => {
+export const setUserAge = async (user_email: string) => {
   await (await database())
     .collection("user")
-    .updateOne({ _id: _id }, { $set: { age: 125 } });
+    .updateOne({ email: user_email }, { $set: { age: 125 } });
 };
