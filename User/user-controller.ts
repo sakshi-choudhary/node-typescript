@@ -3,7 +3,7 @@ import {
   addUserToDatabase,
   getUser,
   getUsers,
-  deleteUsers,
+  deleteUser,
   updateUserAge,
 } from "./user-service";
 import { schema } from "./user-schema";
@@ -63,7 +63,7 @@ const handleGetUsers = async (req: Request, res: Response) => {
 const handledeleteUser = async (req: Request, res: Response) => {
   try {
     let _id = req.params.id;
-    await deleteUsers(_id);
+    await deleteUser(_id);
     res.json({ success: true, message: "User deleted" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

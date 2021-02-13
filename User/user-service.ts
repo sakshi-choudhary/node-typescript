@@ -22,7 +22,7 @@ export const getUsers = async () => {
   return await (await database()).collection("user").find().toArray();
 };
 
-export const deleteUsers = async (_id: string) => {
+export const deleteUser = async (_id: string) => {
   await (await database()).collection("user").findOneAndDelete({ _id: _id });
 };
 
