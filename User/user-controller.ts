@@ -5,6 +5,7 @@ import {
   getUsers,
   deleteUser,
   setUserAge,
+  updateUserPassword,
 } from "./user-service";
 import { schema } from "./user-schema";
 import { ValidationError } from "yup";
@@ -80,6 +81,17 @@ const handlesetUserAge = async (req: Request, res: Response) => {
   }
 };
 
+const handleupdateUserPassword = async (req: Request, res: Response) => {
+  try {
+    let user_email = req.params.email;
+    let user_password = req.body.password;
+    await updateUserPassword(user_email, user_password);
+    res.json({ success: true, message: "User's password changed" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 export const userRoute = () => {
   const app = Router();
   app.post("/", validate, handleUserSignup);
@@ -87,6 +99,7 @@ export const userRoute = () => {
   app.get("/", handleGetUsers);
   app.delete("/:_id", handledeleteUser);
   app.patch("/setage/:email", handlesetUserAge);
+  app.patch("/changepassword/:email", handleupdateUserPassword);
   return app;
 };
 

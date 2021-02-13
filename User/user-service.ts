@@ -31,3 +31,12 @@ export const setUserAge = async (user_email: string) => {
     .collection("user")
     .updateOne({ email: user_email }, { $set: { age: 125 } });
 };
+
+export const updateUserPassword = async (
+  user_email: string,
+  user_password: string
+) => {
+  await (await database())
+    .collection("user")
+    .updateOne({ email: user_email }, { $set: { password: user_password } });
+};
