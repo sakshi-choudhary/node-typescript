@@ -26,10 +26,10 @@ export const deleteUser = async (_id: string) => {
   await (await database()).collection("user").findOneAndDelete({ _id: _id });
 };
 
-export const setUserAge = async (user_email: string) => {
+export const increaseUserAge = async (user_email: string) => {
   await (await database())
     .collection("user")
-    .updateOne({ email: user_email }, { $set: { age: 125 } });
+    .updateOne({ email: user_email }, { $inc: { age: 1 } });
 };
 
 export const updateUserPassword = async (

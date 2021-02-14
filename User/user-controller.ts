@@ -4,7 +4,7 @@ import {
   getUser,
   getUsers,
   deleteUser,
-  setUserAge,
+  increaseUserAge,
   updateUserPassword,
 } from "./user-service";
 import { schema } from "./user-schema";
@@ -71,11 +71,11 @@ const handledeleteUser = async (req: Request, res: Response) => {
   }
 };
 
-const handlesetUserAge = async (req: Request, res: Response) => {
+const handleincreaseUserAge = async (req: Request, res: Response) => {
   try {
     let user_email = req.params.email;
-    await setUserAge(user_email);
-    res.json({ success: true, message: "User's age set to 125" });
+    await increaseUserAge(user_email);
+    res.json({ success: true, message: "User's age incremented by 1" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -98,7 +98,7 @@ export const userRoute = () => {
   app.get("/:email", handleGetUser);
   app.get("/", handleGetUsers);
   app.delete("/:_id", handledeleteUser);
-  app.patch("/setage/:email", handlesetUserAge);
+  app.patch("/increaseage/:email", handleincreaseUserAge);
   app.patch("/changepassword/:email", handleupdateUserPassword);
   return app;
 };
