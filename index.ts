@@ -13,7 +13,7 @@ app.use("/api", userRoute());
 database()
   .then(() => {
     console.log("Mongo Connected");
-    app.listen(3000, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Chalu");
     });
   })
