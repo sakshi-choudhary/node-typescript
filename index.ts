@@ -1,15 +1,15 @@
 import express from "express";
 import database from "./database-service";
 import { userRoute } from "./User/user-controller";
-const cors = require("cors");
+var cors = require("cors");
 import { config } from "dotenv";
 
 const app = express();
 
 config();
 app.use(express.json());
-app.use("/api", userRoute());
 app.use(cors());
+app.use("/api", userRoute());
 
 database()
   .then(() => {
