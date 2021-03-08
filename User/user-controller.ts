@@ -4,8 +4,7 @@ import {
   getUser,
   getUsers,
   deleteUser,
-  increaseUserAge,
-  updateUserPassword,
+  updateSponsor,
 } from "./user-service";
 import { schema } from "./user-schema";
 import { ValidationError } from "yup";
@@ -24,7 +23,7 @@ const validate = async (req: Request, res: Response, next: NextFunction) => {
 
 const handleUserSignup = async (req: Request, res: Response) => {
   try {
-    await addUserToDatabase(req.body.email, req.body.password, req.body.age);
+    await addUserToDatabase(req.body.type, req.body.src, req.body.alt);
     res.json({ success: true, message: "User added" });
   } catch (err) {
     if (err instanceof ValidationError) {
@@ -36,8 +35,8 @@ const handleUserSignup = async (req: Request, res: Response) => {
 
 const handleGetUser = async (req: Request, res: Response) => {
   try {
-    let user_email = req.params.email;
-    const result = await getUser(user_email);
+    let user_type = req.params.type;
+    const result = await getUser(user_type);
     res.status(200).json({ data: result });
   } catch (err) {
     if (err.code)
@@ -65,28 +64,38 @@ const handledeleteUser = async (req: Request, res: Response) => {
   try {
     let _id = req.params.id;
     await deleteUser(_id);
-    res.json({ success: true, message: "User deleted" });
+    res.json({ success: true, message: "deleted" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 };
 
-const handleincreaseUserAge = async (req: Request, res: Response) => {
-  try {
-    let user_email = req.params.email;
-    await increaseUserAge(user_email);
-    res.json({ success: true, message: "User's age incremented by 1" });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-};
+// const handleincreaseUserAge = async (req: Request, res: Response) => {
+//   try {
+//     let user_type = req.params.type;
+//     await increaseUserAge(user_type);
+//     res.json({ success: true, message: "User's age incremented by 1" });
+//   } catch (err) {
+//     res.status(500).json({ success: false, message: err.message });
+//   }
+// };
 
-const handleupdateUserPassword = async (req: Request, res: Response) => {
+// const handleupdateUserPassword = async (req: Request, res: Response) => {
+//   try {
+//     let user_type = req.params.type;
+//     let user_password = req.body.password;
+//     await updateUserPassword(user_type, user_password);
+//     res.json({ success: true, message: "User's password changed" });
+//   } catch (err) {
+//     res.status(500).json({ success: false, message: err.message });
+//   }
+// };
+
+const handleupdateSponsor = async (req: Request, res: Response) => {
   try {
-    let user_email = req.params.email;
-    let user_password = req.body.password;
-    await updateUserPassword(user_email, user_password);
-    res.json({ success: true, message: "User's password changed" });
+    let user_type = req.params.type;
+    await updateSponsor(user_type, req.body.src, req.body.alt);
+    res.json({ success: true, message: "new spons added" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -95,13 +104,12 @@ const handleupdateUserPassword = async (req: Request, res: Response) => {
 export const userRoute = () => {
   const app = Router();
   app.post("/", validate, handleUserSignup);
-  app.get("/:email", handleGetUser);
+  app.get("/:type", handleGetUser);
   app.get("/", handleGetUsers);
   app.delete("/:_id", handledeleteUser);
-  app.patch("/increaseage/:email", handleincreaseUserAge);
-  app.patch("/changepassword/:email", handleupdateUserPassword);
+  app.patch("/spon/:type", handleupdateSponsor);
   return app;
 };
 
-// get => validation over email as IdSchema
+// get => validation over type as IdSchema
 // post => validation over body as userSchema
