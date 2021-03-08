@@ -8,6 +8,9 @@ export const addUserToDatabase = async (
   await (await database())
     .collection("user")
     .insertOne({ email: email, password: password, age: age });
+      
+
+
 };
 
 export const getUser = async (user_email: string) => {
