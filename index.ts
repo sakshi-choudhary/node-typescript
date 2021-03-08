@@ -1,7 +1,7 @@
 import express from "express";
 import database from "./database-service";
 import { userRoute } from "./User/user-controller";
-
+const cors = require("cors");
 import { config } from "dotenv";
 
 const app = express();
@@ -9,6 +9,7 @@ const app = express();
 config();
 app.use(express.json());
 app.use("/api", userRoute());
+app.use(cors());
 
 database()
   .then(() => {
